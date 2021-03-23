@@ -1,5 +1,5 @@
 function ListNode (val, next) {
-  this.val = val === undefined ? 0 : val
+  this.val = val
   this.next = next === undefined ? null : next
 }
 /**
@@ -7,11 +7,13 @@ function ListNode (val, next) {
  */
 const L1 = new ListNode(1)
 let curL1 = L1
+let t = curL1
 curL1.next = new ListNode(2)
 curL1 = curL1.next
-curL1.next = new ListNode(2)
-curL1 = curL1.next
+
 curL1.next  = new ListNode(4)
+curL1 = curL1.next
+curL1.next = t
 
 const L2 = new ListNode(1)
 let curL2 = L2
@@ -118,12 +120,83 @@ function deleteN2 (head, n) {
   return dummy.next
 }
 
+// 定义一个函数，输入一个链表的头结点，反转该链表并输出反转后链表的头结点。
+// 关键：把每个结点 next 指针的指向给反过来就行了
+function reverseList(head) {
+  let pre = null
+  let cur = head
+
+  while (cur) {
+    let next = cur.next
+    cur.next = pre
+    pre = cur
+    cur = next
+  }
+  return pre
+}
+
+// 局部反转：反转从位置 m 到 n 的链表。请使用一趟扫描完成反转。
+// 0 1 3p 3 4 8
+function reverseBetween(head, m, n) {
+  const dummy = new ListNode()
+  dummy.next = head
+  let leftHead = dummy.next
+  let pre, cur, next
+  // 先走m-1步
+  for (let i=0; i<m-1; i++) {
+    leftHead = leftHead.next
+  }
+  pre = leftHead.next
+  let right = pre
+  cur = pre.next
+  let walk = n-m
+
+  while (walk-- > 0) {
+    next = cur.next
+    cur.next = pre
+    pre = cur
+    cur = next
+  }
+  right.next = cur
+  // cur.next = pre
+  leftHead.next = pre
+
+  return dummy.next
+}
+
+// 环链表
+// 给定一个链表，判断链表中是否有环。
+function hasCircle (head) {
+  while(head) {
+    if(head.flag) return true
+    head.flag = true
+    head = head.next 
+  }
+  return false
+}
+
+// 双指针
+function hasCircle2(head) {
+  let slow = head
+  let fast = head
+
+  while(fast.next) {
+    fast = fast.next.next
+    slow = slow.next
+    if(fast === slow) return true
+  }
+  return false
+}
+
 const head = new ListNode()
 const head2 = new ListNode()
 head.next = L1
 head2.next = L2
 // console.log(readList(head))
 // console.log(readList(deleteDuplicates(head)))
-console.log(readList(head2))
+console.log(L1)
 // console.log(readList(deleteDuplicatesAll(head2)))
-console.log(readList(deleteN2(head2,1)))
+// console.log(readList(deleteN2(head2,1)))
+// console.log(readList(reverseList(head2)))
+// console.log(readList(reverseBetween(head2,2,5)))
+console.log(hasCircle2(L1))
