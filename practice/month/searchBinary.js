@@ -127,16 +127,34 @@ const root = {
 }
 
 // 给定一个二叉树，判断其是否是一个有效的二叉搜索树。
-
 function isBSTree(root) {
   if (!root) return true
-
-  if (root.val < root.left?.val || root.val > root.right?.val){
-    return false
-  }
+  if (root.val < root.left?.val || root.val > root.right?.val) return false
   return isBSTree(root.left) && isBSTree(root.right)
 }
 
+// 将一个按照升序排列的有序数组，转换为一棵高度平衡二叉搜索
+// 一个高度平衡二叉树是指一个二叉树每个节点 的左右两个子树的高度差的绝对值不超过 1
+//  [-10,-3,0,5,9] => 一个可能的答案是 [0,-3,9,-10,null,5]
+// 二分法？
+function sortedArrayToBST(arr) {
+  if (!Number.length) return null
+
+  function toTree(start, end) {
+    if (start > end) return null
+
+    const mid = Math.floor((end+start+1)/2)
+    const root = new treeNode(arr[mid])
+    root.left = toTree(start, mid-1)
+    root.right = toTree(mid+1, end)
+    return root
+  }
+  
+  return toTree(0, arr.length-1)
+}
+
+
 // searchTree(root, 3)
 // console.log(new treeNode(2))
-console.log(isBSTree(root))
+// console.log(isBSTree(root))
+console.log(sortedArrayToBST([-10,-3,0,5,9,12,13]))
