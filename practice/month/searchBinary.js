@@ -39,6 +39,7 @@ function insertTree(root, n) {
 // 其无左子：其右子顶替其位置，删除了该节点；
 // 其无右子：其左子顶替其位置，删除了该节点；
 // 其左右子节点都有：其左子树转移到其右子树的最左节点的左子树上，然后右子树顶替其位置，由此删除了该节点
+// 优点保持二叉树平衡
 
 function deleteNode(root, n) {
   if (!root) return
@@ -110,6 +111,87 @@ function deleteNode2(root, n) {
   return root
 }
 
+
+// 给定一个二叉树，判断其是否是一个有效的二叉搜索树。
+function isBSTree(root) {
+  if (!root) return true
+  if (root.val < root.left?.val || root.val > root.right?.val) return false
+  return isBSTree(root.left) && isBSTree(root.right)
+}
+
+
+// 高度平衡的叉树：是任意结点的左右子树高度差绝对值都不大于1的二叉搜索树。
+// 将一个按照升序排列的有序数组，转换为一棵高度平衡二叉搜索
+//  [-10,-3,0,5,9] => 一个可能的答案是 [0,-3,9,-10,null,5]
+// 二分法？
+function sortedArrayToBST(arr) {
+  if (!Number.length) return null
+
+  function toTree(start, end) {
+    if (start > end) return null
+
+    const mid = Math.floor((end+start)/2)
+    const root = new treeNode(arr[mid])
+    root.left = toTree(start, mid-1)
+    root.right = toTree(mid+1, end)
+    return root
+  }
+  
+  return toTree(0, arr.length-1)
+}
+
+// 给定一个二叉树，判断它是否是高度平衡的二叉树
+// 任意结点
+// 左右子树高度差绝对值都不大于1
+// 二叉搜索树
+function isBalanceTree(root) {
+  if (!root) return
+  let flag = true
+
+  function dfs(root) {
+    if(!root || !flag) return 0
+
+    const leftH = dfs(root.left)
+    const rightH = dfs(root.right)
+    if(Math.abs(leftH-rightH) > 1) {
+      flag = false
+      return 0
+    } else {
+      return leftH > rightH ? leftH + 1 : rightH + 1
+    }
+  }
+
+  dfs(root)
+  return flag
+}
+
+// 给你一棵二叉搜索树，请你返回一棵平衡后的二叉搜索树，新生成的树应该与原来的树有着相同的节点值。
+function balanceBST() {
+  const nums = []
+  // inorder取出有序数组
+  function inorder(root) {
+    if(!root) return
+    inorder(root.left)
+    nums.push(root.val)
+    inorder(root.right)
+  }
+
+  function toBST(start, end) {
+    if (start > end) return null
+
+    const mid = Math.floor((start+end)/2)
+    const root = new treeNode(nums[mid])
+    root.left = toBST(start, mid-1)
+    root.right = toBST(mid+1, end)
+    
+    return root
+  }
+
+  inorder(root)
+  return toBST(0, nums.length-1)
+}
+
+
 const root = {
   val: 2,
   left: {
@@ -121,40 +203,16 @@ const root = {
       val: 3
     },
     right: {
-      val: 5
+      val: 5,
+      left: {
+        val: 9
+      }
     }
   }
 }
-
-// 给定一个二叉树，判断其是否是一个有效的二叉搜索树。
-function isBSTree(root) {
-  if (!root) return true
-  if (root.val < root.left?.val || root.val > root.right?.val) return false
-  return isBSTree(root.left) && isBSTree(root.right)
-}
-
-// 将一个按照升序排列的有序数组，转换为一棵高度平衡二叉搜索
-// 一个高度平衡二叉树是指一个二叉树每个节点 的左右两个子树的高度差的绝对值不超过 1
-//  [-10,-3,0,5,9] => 一个可能的答案是 [0,-3,9,-10,null,5]
-// 二分法？
-function sortedArrayToBST(arr) {
-  if (!Number.length) return null
-
-  function toTree(start, end) {
-    if (start > end) return null
-
-    const mid = Math.floor((end+start+1)/2)
-    const root = new treeNode(arr[mid])
-    root.left = toTree(start, mid-1)
-    root.right = toTree(mid+1, end)
-    return root
-  }
-  
-  return toTree(0, arr.length-1)
-}
-
-
 // searchTree(root, 3)
 // console.log(new treeNode(2))
 // console.log(isBSTree(root))
-console.log(sortedArrayToBST([-10,-3,0,5,9,12,13]))
+const bl = sortedArrayToBST([-10,-3,0,5,9,12,13])
+console.log(isBalanceTree(root))
+console.log(isBalanceTree(balanceBST(root)))
