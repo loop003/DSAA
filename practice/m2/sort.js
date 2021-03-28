@@ -55,45 +55,82 @@ function insertSort(nums) {
 
 // 归并 
 // 关键：分割，有序数组合并
+// 共分割log(n)次（每轮算一次），每轮合并O(n), 共合并log(n)次
+// 时间复杂度：log(n)*O(n) => O(nlogn)
 function mergeSort(nums) {
-  return run(nums)
+  const len = nums.length
+  if (len <= 1 ) return nums
+  const mid = Math.floor(len/2)
+  return merge(mergeSort(nums.slice(0, mid)), mergeSort(nums.slice(mid)))
+}
 
-  function run(nums) {
-    const len = nums.length
-    if (len <= 1 ) return nums
-    const mid = Math.floor(len/2)
-    const res = merge(run(nums.slice(0, mid)), run(nums.slice(mid)))
-    return res
-  }
+// 有序数组合并
+function merge(nums1, nums2) {
+  const res = []
+  let i = 0, j = 0
+  const len1 = nums1.length, len2 =nums2.length
 
-  function merge(nums1, nums2) {
-    let i = nums1.length - 1, j = nums2.length - 1
-    nums1 = [...nums1, ...new Array(j+1).fill(0)]
-    let len = nums1.length - 1
-
-    while (i >= 0 && j >= 0) {
-        if (nums1[i] > nums2[j]) {
-          nums1[len] = nums1[i]
-          i--
-        } else {
-          nums1[len] = nums2[j]
-          j--
-        }
-        len--
+  while (i < len1 && j < len2) {
+    if (nums1[i] < nums2[j]) {
+      res.push(nums1[i])
+      i++
+    } else {
+      res.push(nums2[j])
+      j++
     }
-    while (j >= 0) {
-      nums1[j] = nums2[j]
+  }
+  if (i < len1) {
+    return res.concat(nums1.slice(i)) // concat返回新浅拷贝数组
+  } else {
+    return res.concat(nums2.slice(j))
+  }
+}
+
+
+// 快速排序
+// 左右指针分别指向数组的两端。接下来我们要做的，就是先移动左指针，
+// 直到找到一个不小于基准值的值为止；然后再移动右指针，直到找到一个不大于基准值的值为止。
+// 左右指针都停止时，左右值互换
+// 最好：快速排序的时间复杂度分析思路和归并排序相似，最后结果也是 O(nlog(n))。
+// 最坏：每次划分取到的都是当前数组中的最大值/最小值：O(n^2)
+// 平均：O(nlog(n))
+function quikSort(nums, left=0, right=nums.length-1) {
+  if ((right-left) < 1) return nums
+  let i = left, j = right
+  const mid = Math.floor((i+j)/2)
+  const pivot = nums[mid]
+  // =保证pivot在左数组
+  while ( i <= j) {
+    while (nums[i] < pivot) {
+      i++
+    }
+    // 右边等的时候也换，不然死循环
+    while (nums[j] > pivot) {
       j--
     }
-    return nums1
+    // =交换防止死循环
+    if (j >= i) {
+      [nums[i], nums[j]] = [nums[j], nums[i]]
+      j--
+      i++
+    }
   }
+  // 优化：长度为2时，不需要再操作
+  if (left < i-1) {
+    quikSort(nums, left, i-1)
+  }
+  if (i < right) {
+    quikSort(nums, i, right)
+  }
+  return nums
 }
 
 // 测试
 
-a = [9,22,4,5,6,7,1,4,74,0,7,3,90]
+const a = [1,3,90,101,100]
 
-console.log(mergeSort(a))
+quikSort(a)
+console.log(quikSort(a))
 // function randArray(len, min, max) {
 //   return Array.from({ length: len }, v => Math.floor(Math.random() * (max - min)) + min);
 // }
