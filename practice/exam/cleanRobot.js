@@ -18,6 +18,48 @@
 // 不是实现机器人,room未知
 
 function cleanRoom(robot) {
-  const len = Room.
+  // 与islands对比，房间大小未知
 
+  let dir = 0
+  // 存储扫过的节点
+  const cleaned = new Set()
+  
+  dfs(0, 0, dir)
+
+  function dfs(i, j, dir) {
+    const cur = i + '' + j
+    if (cleaned.has(cur)) return
+    robot.clean()
+    cleaned.add(cur)
+
+    for (let k=0; k<4; k++) {
+      if (robot.move()) {
+        let x = i, y = j
+        switch (dir) {
+          case 0:
+            x = i - 1
+            break
+          case 90:
+            y = j - 1
+            break
+          case 180:
+            x = i + 1
+            break
+          case 270:
+            y = j + 1
+            break
+        }
+        dfs(x, y, dir)
+        // 
+        robot.turnleft()
+        robot.turnleft()
+        robot.move()
+        robot.turnright()
+        robot.turnright()
+      }
+      robot.turnleft()
+      dir += 90
+      dir %= 360
+    }
+  }
 }
