@@ -1,14 +1,13 @@
 function medianOfarrs(nums1, nums2) {
   let len_1 = nums1.length 
   let len_2 = nums2.length
+
+  // 确保切割数组是最长数组
   if (len_2 > len_1) {
-    const tem = nums1
-    nums1 = nums2
-    nums2 = tem
-    // [len_1, len_2] = [len_2, len_1] 为什么不管用
-    const len = len_1
-    len_1 = len_2
-    len_2 = len
+    // 注意分号
+    // [nums1, nums2] = [nums2, nums1]
+    // ;[len_1, len_2] = [len_2, len_1] 
+    return medianOfarrs(nums2, nums1)
   }
   let L1 = Math.floor(len_1/2) - 1, R1, L2, R2
 
@@ -29,6 +28,7 @@ function medianOfarrs(nums1, nums2) {
   return Math.min(nums2[R2], nums1[R1])
 }
 
-const nums1 = [1, 5, 6, 7], nums2 = [1, 2, 4, 12]
+const nums1 = [5, 6, 7], nums2 = [1, 2, 4, 12]
 
 console.log(medianOfarrs(nums1, nums2))
+
