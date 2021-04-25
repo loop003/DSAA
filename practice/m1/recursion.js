@@ -44,6 +44,7 @@ function subsets(nums) {
   const len = nums.length
 
   function dfs(n) {
+    // 一层浅拷贝
     res.push([...cur])
     for (let i=n; i<len; i++) {
       cur.push(nums[i])
@@ -63,6 +64,7 @@ function combine(n, k) {
 
   function dfs(x) {
     if (cur.length === k) {
+      // 一层浅拷贝
       res.push([...cur])
       return
     }

@@ -33,6 +33,7 @@ const isValid = (str) => {
 // 如果之后都不会升高，请在该位置用 0 来代替。
 // 给定一个列表 temperatures = [73, 74, 75, 71, 69, 72, 76, 73]，你的输出应该是 [1, 1, 4, 2, 1, 1, 0, 0]。
 // 因此时间复杂度就是O(n)
+// 维持单调递减栈
 const tampRaise = (arr) => {
   const stack = []
   const len = arr.length
@@ -51,8 +52,10 @@ const tampRaise = (arr) => {
 
 // 最小栈 0 1 2 3 0 4
 // 0 -1
+// 设计一个支持 push ，pop ，top 操作，并能在常数时间内检索到最小元素的栈。
 const MinStack = function() {
   const stack = []
+  // 维持一个递减的最小栈
   const stack2 = []
 };
 
@@ -96,6 +99,7 @@ class Queue {
     this.stack.push(x)
   }
   pop() {
+    // stack2还要则直接取
     if (this.stack2.length <= 0) {
       if(this.stack.length <= 0 ) return
       while (this.stack.length > 0) {
@@ -114,7 +118,7 @@ class Queue {
     return this.stack2[this.stack2.length-1]
   }
   empty() {
-    return this.stack2.length <= 0 && this.stack.length <= 0
+    return !this.stack2.length && !this.stack.length
   }
 }
 
