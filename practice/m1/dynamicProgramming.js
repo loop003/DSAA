@@ -6,7 +6,7 @@
 // 如果没有任何一种硬币组合能组成总金额，返回 -1。
 // 状态转移方程：f(amount) = min(f(amount-c1)+1,f(amount-c2)+1,...,f(amount-cn)+1)
 function coinChange(coins, amount) {
-  const f = new Array(amount+1).fill[Infinity]
+  const f = new Array(amount+1).fill(Infinity)
   f[0] = 0
   for (let i=1; i<=amount; i++) {
     for (let j=0; j<coins.length; j++) {
@@ -16,6 +16,25 @@ function coinChange(coins, amount) {
     }
   }
   return f[amount]!==Infinity ? f[amount] : -1
+}
+
+function coinChange2(coins, amount) {
+  const f = new Array(amount+1).fill(Infinity)
+  function dp(n) {
+    if (n===0) return 0
+    const c = coins.map(i => {
+      if (n-i >=0 && f[n-i] === Infinity) {
+        return dp(n-i) + 1
+      }
+      return n-i > 0 ? f[n-i] + 1 : Infinity
+    })
+
+    f[n] = Math.min(...c)
+    return f[n]
+  }
+
+  const res = dp(amount)
+  return res!==Infinity ? res : -1
 }
 
 
@@ -105,5 +124,8 @@ function lengthOfLIS(nums) {
 
 // const nums = [4, 66, 7, 2, 5,9], s = 1
 // console.log(dpNums(nums, s))
-const nums = [10,9,2,5,3,7,101,18]
-console.log(lengthOfLIS(nums))
+// const nums = [10,9,2,5,3,7,101,18]
+// console.log(lengthOfLIS(nums))
+const coins = [1, 2, 5], amount = 117
+console.log(coinChange(coins,amount))
+console.log(coinChange2(coins,amount))
