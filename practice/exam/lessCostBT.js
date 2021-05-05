@@ -14,6 +14,7 @@ const lessCost = function() {
                 () => Array.from({length: n+1}, 
                   () => -1)))
   // 加一个虚拟根节点
+
   root.unshift(0)
 
   // p父节点

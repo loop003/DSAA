@@ -6,7 +6,7 @@ function stairClimb(n) {
   res[2] = 2
 
   function dp(n) {
-    if (n>2){
+    if (n>2 && !res[n]){
       res[n] = dp(n-1) + dp(n-2)
     }
     return res[n]
