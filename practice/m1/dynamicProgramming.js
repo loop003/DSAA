@@ -20,6 +20,7 @@ function coinChange(coins, amount) {
 
 function coinChange2(coins, amount) {
   const f = new Array(amount+1).fill(Infinity)
+  
   function dp(n) {
     if (n===0) return 0
     const c = coins.map(i => {

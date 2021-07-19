@@ -1,7 +1,6 @@
-// 不加分号, 编译解析报错
 
 // 大数和
-function solve1( s ,  t ) {
+function solve( s ,  t ) {
   const l1 = s.split('').reverse()
   const l2 = t.split('').reverse()
   const n1 = l1.length, n2 = l2.length
@@ -41,9 +40,7 @@ function solve( s ,  t ) {
     const y = j < 0 ? 0 : t[j--]*1
     const sum = x + y + carry
     res += sum%10
-    console.log(res)
     carry = Math.floor(sum/10)
   }
-  console.log(res)
   return res.split('').reverse().join('')
 }
