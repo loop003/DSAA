@@ -125,8 +125,8 @@ function lengthOfLIS(nums) {
 
 // const nums = [4, 66, 7, 2, 5,9], s = 1
 // console.log(dpNums(nums, s))
-// const nums = [10,9,2,5,3,7,101,18]
-// console.log(lengthOfLIS(nums))
-const coins = [1, 2, 5], amount = 117
-console.log(coinChange(coins,amount))
-console.log(coinChange2(coins,amount))
+const nums = [1,10,9,2,5,3,7,101,18]
+console.log(lengthOfLIS(nums))
+// const coins = [1, 2, 5], amount = 117
+// console.log(coinChange(coins,amount))
+// console.log(coinChange2(coins,amount))
