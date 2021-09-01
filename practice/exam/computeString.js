@@ -19,6 +19,7 @@ function computeString (str) {
 // num: 2 2
 // str: B 
 // 维护一个（str， num）元组
+// 从右向左，strStack和numStack缓存遇到括号时的子序列
 function computeString2 (str) {
   const strStack = [], numStack = []
   let res = '', num = 0
@@ -29,11 +30,13 @@ function computeString2 (str) {
     if (val >= 0 && val <= 9) {
       num = num * 10 + val*1
     } else if (val === ')') {
+      // 遇到）保存右边的序列和num
       strStack.push(res)
       numStack.push(num)
       res = ''
       num = 0
     } else if (val === '(') {
+      // 关键，当前序列*栈顶num，再拼接栈顶str子序列
       res = res.repeat(numStack.pop() || 1) + strStack.pop()
     } else {
       res = val.repeat(num || 1) + res

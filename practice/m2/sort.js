@@ -127,8 +127,12 @@ function quikSort(nums, left=0, right=nums.length-1) {
 
 // 测试
 
-const a = [1,3,90,101,100]
-
+const a = [1,3,90,101,7,8,100,90]
+// 1, 3, 90, 90, 7, 8, 100, 101
+// 1, 3, 90, 90, 7, 8|, |100, 101
+// 1, 3, 8, |90, 7|, 90   |100|, 101
+// 1, 3, 8, 7|, |90, 90
+// 1, 3, 7|, |8
 quikSort(a)
 console.log(quikSort(a))
 // function randArray(len, min, max) {
